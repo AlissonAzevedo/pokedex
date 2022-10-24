@@ -47,7 +47,7 @@ export default {
     flex-direction: column;
     padding: 2em 1em;
     margin-bottom: 2em;
-    width: 22%;
+    width: 280px;
     border-radius: 1em;
     border: 1px solid #e33d33;
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);

@@ -1,7 +1,12 @@
 <template>
     <div class="container">
+        <div class="btn-back">
+            <router-link to="/">
+                <h3>Voltar</h3>
+            </router-link>
+        </div>
         <div class="card">
-            <span># 0{{pokemon.id}}</span>
+            <span># {{pokemon.id}}</span>
             <h3>{{pokemon.name}}</h3>
             <div class="container-header">
                 <ul class="type">
@@ -11,25 +16,25 @@
                         <span>{{ type.type.name }}</span>
                     </li>
                 </ul>
-                <img :src="`https://cdn.traction.one/pokedex/pokemon/${pokemon.id}.png`" :alt="pokemon.name" class="img-pokemon">
+                <img :src="`https://cdn.traction.one/pokedex/pokemon/${pokemon.id}.png`" :alt="pokemon.name"
+                    class="img-pokemon">
             </div>
-            
-            <ul class="stats">
-                <li v-for="stat in pokemon.stats" :key="stat.stat.name">
-                    {{ stat.stat.name }}: {{ stat.base_stat }}
-                </li>
-            </ul>
+            <PokemonStep :pokemon="pokemon" />
         </div>
     </div>
 </template>
 
 <script>
+import PokemonStep from '@/components/PokemonStep'
 import { ref, onMounted } from 'vue'
 import { getPokemon } from '../../services/pokemon.service'
 import { useRoute } from 'vue-router'
 
 export default {
     name: 'PokemonView',
+    components: {
+        PokemonStep
+    },
     setup() {
         const route = useRoute()
         const pokemon = ref({})
@@ -37,7 +42,6 @@ export default {
         const getPokemonbyName = async () => {
             const response = await getPokemon(pokemonName)
             pokemon.value = response.data
-            console.log(pokemon.value)
         }
         const pokemonInfo = onMounted(() => {
             getPokemonbyName()
@@ -61,11 +65,36 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+
+    .btn-back {
+        position: absolute;
+        top: 0;
+        left: 25px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;    
+        cursor: pointer;
+
+        a {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color:#e33d33;
+        }
+    }
 }
 
 .card {
-    width: 60%;
-    max-width: 600px;
+    height: 600px;
+    width: 600px;
     min-width: 260px;
     display: flex;
     justify-content: center;
@@ -77,9 +106,9 @@ export default {
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
     background-color: #333;
     color: #fff;
-    min-width: 170px;
+    
 
-    & h3{
+    & h3 {
         text-transform: capitalize;
     }
 
@@ -96,85 +125,101 @@ export default {
 .img-pokemon {
     width: 100%;
     height: 100%;
-    max-width: 160px;
-    max-height: 160px;
-}
-.stats {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.stats {
-  color: black;
-  & li {
-    list-style: none;
-    text-transform: uppercase;
-    margin: 0 0.5em;
-  }
+    max-width: 200px;
+    max-height: 200px;
 }
 
 .type {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
     justify-content: space-around;
     align-items: flex-start;
-  & li {
-    width: 120px;
-    justify-content: space-around;
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    border-radius: 0.5em;
-    padding: 0.5em;
-    list-style: none;
-    color: white;
-    text-transform: uppercase;
+    width: 60%;
+    margin-right: 0.5em;
 
-    & .type-icon{
-        max-width: 20px;
-        max-height: 20px;
-        margin-right: 0.5em;
+    & li {
+        margin: 0.5em 0;
     }
-  }
+
+    & li {
+        width: 120px;
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        border-radius: 0.5em;
+        padding: 0.5em;
+        list-style: none;
+        color: white;
+        text-transform: uppercase;
+
+        & .type-icon {
+            max-width: 20px;
+            max-height: 20px;
+            margin-right: 0.5em;
+        }
+    }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
     .card {
-        width: 90%;
+        width: 380px;
     }
 
-    .container-header{
+    .container-header {
         width: 100%;
         justify-content: flex-start;
 
-        & type{
+        & type {
             width: 100%;
             align-items: flex-start;
         }
     }
-    .type {
-        flex-direction: column;
-        width: 60%;
-        margin-right: 0.5em;
-        & li {
-            margin: 0.5em 0;
-        }
-    }
-
     .stats {
         flex-direction: column;
+
         & li {
             margin: 0.5em 0;
+            width: 90%;
+            list-style: outside;
+            text-align: left;
         }
     }
 
 
 }
 
+@media screen and (max-width: 480px) {
+    .card {
+        width: 300px;
+    }
+
+    .container-header {
+        width: 100%;
+        justify-content: flex-start;
+
+        & .img-pokemon{
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        & type {
+            width: 100%;
+            align-items: flex-start;
+        }
+    }
+    .stats {
+        flex-direction: column;
+
+        & li {
+            margin: 0.5em 0;
+            width: 90%;
+            list-style: outside;
+            text-align: left;
+        }
+    }
+}
 
 .normal {
     background-color: $normal
