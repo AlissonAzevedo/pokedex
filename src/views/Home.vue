@@ -7,7 +7,9 @@
           type="text" 
           class="input" 
           placeholder="Digite a busca aqui"
-          v-model="search">
+          v-model="search"
+          @keyup.enter="getPokemonbyName"
+          >
   
           <button class="btn-search" @click="getPokemonbyName">Pesquisar</button>
       </div>
@@ -25,7 +27,6 @@
           <button class="btn-search" @click="getPokemonbyName">Pesquisar</button>
       </div>
     </div>
-    <!-- <CardPokemon :pokemon="pokemon" /> -->
   </div>
 </template>
 
@@ -49,7 +50,6 @@ export default {
       const response = await getPokemon(search.value)
       pokemon.value = response.data
       isSearch.value = true
-      // console.log(pokemon.value)
     }
     return {
       pokemon,
@@ -73,12 +73,20 @@ export default {
 .container-search{
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1em;
   padding: 0 1em;
 
+  & .search{
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+    padding: 0 1em;
+  }
   & .logo{
     width: 300px;
     margin-bottom: 1em;
@@ -91,7 +99,7 @@ export default {
   align-items: center;
 
   & .search{
-    width: 100%;
+    width: 70%;
     justify-content: space-around;
     align-items: center;
     display: flex;
