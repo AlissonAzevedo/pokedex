@@ -22,7 +22,9 @@
           type="text" 
           class="input" 
           placeholder="Digite a busca aqui"
-          v-model="search">
+          v-model="search"
+          @keyup.enter="getPokemonbyName"
+          >
   
           <button class="btn-search" @click="getPokemonbyName">Pesquisar</button>
       </div>
